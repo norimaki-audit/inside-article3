@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="株価算定（企業価値評価）とは？M&A・事業承継で重要になる理由、代表的な評価アプローチ（DCF法・類似会社比較法・純資産法）と、評価額と譲渡価格の違いをわかりやすく解説します。" />
+  <title>株価算定（企業価値評価）とは？M&A・事業承継で重要になる理由をわかりやすく解説</title>
+
+  <!--
+  =========================================
+  【必ず置換】お問い合わせURL
+  下の __CONTACT_URL__ を、公開後の問い合わせフォームURLに置き換えてください。
+  例）https://example.com/contact
+  =========================================
+  -->
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Brand */
+      --navy:#2A2954;
+      --navy2:#32315E;
+      --link:#1f3a8a;
+
+      /* Page (readability-first) */
+      --page:#f6f7fb;
+      --paper:#ffffff;
+      --line:#e6e8ef;
+      --line2:#d6dae6;
+
+      --text:#111111;
+      --text2:#1f2937;
+      --muted:#6b7280;
+
+      --good:#16a34a;
+      --warn:#b45309;
+
+      --radius: 18px;
+      --radius2: 22px;
+      --shadow: 0 10px 28px rgba(17,24,39,.08);
+      --shadow2: 0 6px 18px rgba(17,24,39,.06);
+
+      --max: 1120px;
+      --prose: 72ch;
+
+      --p: 16.5px;
+      --lh: 1.78;
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      color: var(--text);
+      background: var(--page);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    a{ color: var(--link); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+    img{ max-width:100%; height:auto; }
+
+    .wrap{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
+    @media (max-width: 520px){ .wrap{ width: calc(100% - 28px); } }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap: 22px;
+      align-items:start;
+      padding-bottom: 70px;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+
+    .skip{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+    .skip:focus{
+      position:fixed; left:14px; top:14px; width:auto; height:auto;
+      padding:10px 12px;
+      background: rgba(17,24,39,.92);
+      color:#fff;
+      border-radius: 12px;
+      z-index: 9999;
+    }
+
+    /* HERO (dark allowed, full-bleed) */
+    .hero{
+      color: rgba(255,255,255,.92);
+      background:
+        linear-gradient(180deg, rgba(6,16,24,.90), rgba(6,16,24,.72) 45%, rgba(6,16,24,.92)),
+        url("https://static.wixstatic.com/media/ef45fa_85d537fb06cf432284f104a9cae89da8~mv2.png") center/cover no-repeat;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      padding: clamp(18px, 3vw, 40px) 0 18px;
+
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      border-radius: 0;
+
+      /* iPhone safe-area */
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    .topbar{ display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(6px);
+    }
+    .brand img{ height:22px; width:auto; display:block; }
+    .brand small{ color: rgba(255,255,255,.72); font-weight: 500; }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.88);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    h1{
+      font-family: "Noto Serif JP", serif;
+      line-height: 1.35;
+      letter-spacing: .01em;
+      margin: 8px 0 10px;
+      font-size: clamp(24px, 3.5vw, 40px);
+      text-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+
+    .lede{
+      max-width: 92ch;
+      margin: 10px 0 12px;
+      color: rgba(255,255,255,.86);
+      font-size: clamp(14.5px, 1.55vw, 16px);
+      line-height: 1.85;
+    }
+
+    .meta{ display:flex; flex-wrap:wrap; gap:10px; color: rgba(255,255,255,.72); font-size: 13.5px; align-items:center; }
+    .meta .dot{ width:4px; height:4px; border-radius:999px; background: rgba(255,255,255,.35); display:inline-block; }
+
+    /* Cards */
+    .card{
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .inner{ padding: 20px; }
+    @media (max-width: 520px){ .inner{ padding: 16px; } }
+
+    /* TOC */
+    .toc h2{ margin:0 0 10px; font-size: 13.5px; letter-spacing: .08em; color:#111827; }
+    .toc ol{ margin:0; padding-left:18px; color: var(--text2); }
+    .toc li{ margin: 6px 0; }
+    .toc a{ color:#111827; }
+
+    .tocMobile{ display:none; }
+    @media (max-width: 980px){
+      .tocDesktop{ display:none; }
+      .tocMobile{ display:block; margin-top: 14px; }
+      .toc details{ border-radius:16px; border:1px solid var(--line); background:#fff; padding:12px 14px; box-shadow: var(--shadow2); }
+      .toc summary{ cursor:pointer; list-style:none; font-weight:700; letter-spacing:.02em; color:#111827; }
+      .toc summary::-webkit-details-marker{ display:none; }
+      .toc details[open]{ padding-bottom: 14px; }
+      .toc details ol{ margin-top: 10px; }
+    }
+
+    /* Article */
+    .article{ box-shadow: var(--shadow); }
+    .prose{ max-width: var(--prose); margin: 0 auto; }
+
+    /* Section divider: h2 + right line */
+    .article h2{
+      margin: 28px 0 10px;
+      font-size: clamp(19px, 2.1vw, 22px);
+      line-height: 1.45;
+      letter-spacing: .02em;
+      color: #0f172a;
+      display:flex;
+      align-items:center;
+      gap: 14px;
+    }
+    .article h2:first-child{ margin-top: 0; }
+    .article h2::after{
+      content:"";
+      flex:1;
+      height:2px;
+      background: linear-gradient(90deg, rgba(42,41,84,.55), rgba(42,41,84,.10));
+      border-radius: 999px;
+      transform: translateY(1px);
+    }
+    .article h2:not(:first-of-type){ padding-top: 18px; border-top: 1px solid var(--line); }
+
+    .article h3{
+      margin: 18px 0 8px;
+      font-size: clamp(16px, 1.9vw, 18px);
+      line-height: 1.55;
+      color: #111827;
+      position: relative;
+      padding-left: 10px;
+    }
+    .article h3::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:.55em;
+      width:4px;
+      height:1.1em;
+      border-radius: 999px;
+      background: rgba(42,41,84,.55);
+    }
+
+    .article p{ font-size: var(--p); line-height: var(--lh); margin: 10px 0; color: var(--text); }
+    .article ul, .article ol{ margin: 10px 0; padding-left: 1.2em; }
+    .article li{ margin: 6px 0; line-height: 1.75; }
+
+    .note{
+      border: 1px solid var(--line);
+      border-left: 6px solid rgba(42,41,84,.55);
+      background: #fbfbfd;
+      border-radius: 16px;
+      padding: 14px 14px 14px 12px;
+      margin: 14px 0;
+    }
+    .note strong{ color:#111827; }
+    .note .mini{ color: var(--muted); font-size: 13.5px; line-height:1.65; margin-top: 6px; }
+
+    .chips{
+      display:flex; flex-wrap:wrap; gap:8px;
+      padding: 0; margin: 12px 0 2px; list-style:none;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 13.5px;
+      color:#111827;
+    }
+    .chip b{
+      display:inline-grid; place-items:center;
+      width: 22px; height: 22px;
+      border-radius:999px;
+      background: rgba(42,41,84,.12);
+      color: var(--navy);
+      font-size: 12px;
+    }
+
+    .cols2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    @media (max-width: 720px){ .cols2{ grid-template-columns: 1fr; } }
+
+    .pane{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 14px;
+    }
+    .pane h4{
+      margin: 0 0 8px;
+      font-size: 14.5px;
+      letter-spacing: .02em;
+      color:#111827;
+      display:flex; align-items:center; gap:8px;
+    }
+    .badge{
+      display:inline-flex; align-items:center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      border: 1px solid var(--line);
+      color: var(--navy);
+      background: rgba(42,41,84,.08);
+    }
+
+    .tableWrap{
+      overflow:auto;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow: var(--shadow2);
+      margin: 12px 0 6px;
+    }
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+    th, td{
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14.5px;
+      line-height: 1.65;
+    }
+    th{
+      background: #f3f5fb;
+      color: #111827;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      white-space: nowrap;
+    }
+    tr:last-child td{ border-bottom: none; }
+    .foot{ color: var(--muted); font-size: 13px; line-height: 1.65; margin-top: 6px; }
+
+    .figure{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 14px;
+      margin: 12px 0;
+      box-shadow: var(--shadow2);
+    }
+    .figureTitle{
+      margin: 0 0 10px;
+      font-size: 14px;
+      letter-spacing: .06em;
+      color: #111827;
+      text-transform: none;
+    }
+
+    /* Buttons */
+    .btns{ display:flex; gap:10px; flex-wrap: wrap; margin-top: 10px; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #111827;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+    .btnPrimary{
+      background: var(--navy);
+      color: #fff;
+      border-color: rgba(42,41,84,.35);
+      box-shadow: 0 12px 24px rgba(42,41,84,.18);
+    }
+    .btn small{ font-weight: 600; opacity: .85; }
+    .btn:hover{ text-decoration:none; transform: translateY(-1px); }
+
+    /* Sidebar */
+    .side .inner{ padding: 18px; }
+    .side h3{ margin: 0 0 8px; padding-left: 10px; }
+    .side h3::before{ top:.55em; }
+    .side p, .side li{ color: var(--text2); }
+    .side ul{ margin: 8px 0 0; }
+
+    /* CTA block inside article */
+    .cta{
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #ffffff, #fbfbff);
+      padding: 16px;
+      margin: 18px 0 6px;
+      box-shadow: var(--shadow2);
+    }
+    .cta h3{ margin-top: 0; }
+
+    /* Footer */
+    footer{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      padding: 22px 0 60px;
+    }
+    footer a{ color: var(--muted); text-decoration: underline; text-decoration-style: dotted; }
+    .hr{ height:1px; background: var(--line); margin: 14px 0; }
+
+    /* Small utility */
+    .kicker{
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: none;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    .muted{ color: var(--muted); }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#content">本文へスキップ</a>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="topbar" aria-label="サイト上部">
+        <div class="brand" aria-label="ブランド">
+          <img src="https://static.wixstatic.com/media/ef45fa_ee036c6be23b48ed9bc7dc22a2f90da9~mv2.png" alt="FinTrust ロゴ" loading="eager" />
+          <small>FinTrust / M&amp;A・会計・財務</small>
+        </div>
+        <div class="pill" aria-label="記事カテゴリ">
+          <span aria-hidden="true">■</span>
+          <span>コラム｜株価算定（企業価値評価）</span>
+        </div>
+      </div>
+
+      <h1 id="top">株価算定（企業価値評価）とは？<br/>M&amp;A・事業承継で重要になる理由をわかりやすく解説</h1>
+      <p class="lede">
+        M&amp;Aや事業承継で避けて通れない「株式の価格」。上場会社のように市場価格がない中堅・中小企業こそ、
+        <strong>“なぜその金額になるのか”</strong>を説明できる形で整理することが、納得感ある交渉と意思決定につながります。
+      </p>
+      <div class="meta" aria-label="記事メタ情報">
+        <span>監修：公認会計士（想定）</span><span class="dot" aria-hidden="true"></span>
+        <span>対象：買い手／売り手／金融機関／仲介担当者</span><span class="dot" aria-hidden="true"></span>
+        <span>読了目安：5〜7分</span>
+      </div>
+
+      <nav class="toc tocMobile" aria-label="目次（モバイル）">
+        <details open>
+          <summary>目次をひらく</summary>
+          <ol>
+            <li><a href="#intro">はじめに</a></li>
+            <li><a href="#when">株価算定が必要になる場面</a></li>
+            <li><a href="#no-single">「唯一の正解」はない</a></li>
+            <li><a href="#approaches">よく使われる考え方（3つ）</a></li>
+            <li><a href="#gap">評価額と譲渡価格は一致しない</a></li>
+            <li><a href="#beyond">大切なのは「金額」だけではない</a></li>
+            <li><a href="#summary">まとめ</a></li>
+            <li><a href="#cta">ご相談（CTA）</a></li>
+          </ol>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="content" role="main">
+    <div class="grid" aria-label="記事本体とサイドバー">
+      <!-- Main -->
+      <article class="card article" aria-label="記事本文">
+        <div class="inner">
+          <div class="prose">
+            <p class="kicker">POINT</p>
+            <div class="note">
+              <strong>株価算定は「価格を決める道具」ではなく、価格を説明し、交渉と意思決定を前に進めるための“共通言語”です。</strong>
+              <div class="mini">買い手・売り手・金融機関で見ている論点が違うため、複数の視点で整理することが実務では重要になります。</div>
+            </div>
+
+            <h2 id="intro">はじめに</h2>
+            <p>
+              M&amp;Aや事業承継の場面で、よく出てくる言葉のひとつが<strong>株価算定</strong>です。<strong>企業価値評価</strong>と呼ばれることもあります。
+            </p>
+            <p>
+              「自社の株式はいくらと考えればよいのか」「買い手から提示された価格は妥当なのか」「金融機関にどう説明すればよいのか」——
+              こうした疑問を持つ方は少なくありません。特に中堅・中小企業では、上場会社のように市場価格がないため、価格の考え方を整理することがとても重要です。
+            </p>
+            <p>
+              株価算定は、単に数字を出すためのものではありません。会社の価値を整理し、価格について納得感のある判断や交渉を行うための土台になります。
+            </p>
+
+            <h2 id="when">株価算定が必要になる場面</h2>
+            <p>株価算定は、主に次のような場面で行われます。</p>
+            <ul>
+              <li>M&amp;Aで株式を譲渡するとき</li>
+              <li>親族内承継や役員承継を進めるとき</li>
+              <li>買い手と売り手で価格交渉をするとき</li>
+              <li>金融機関に価格の考え方を説明するとき</li>
+            </ul>
+            <p>
+              価格は、今の利益だけで決まるものではありません。将来の収益力、保有している資産、借入の状況、業界の相場感など、
+              さまざまな要素を踏まえて考える必要があります。
+            </p>
+
+            <div class="figure" role="group" aria-label="図：価格を左右する要素（概念図）">
+              <p class="figureTitle">図｜価格を左右する要素（概念図）</p>
+              <!-- Inline SVG illustration (no external asset needed) -->
+              <svg viewBox="0 0 900 240" width="100%" height="auto" role="img" aria-label="将来収益力、資産負債、借入、相場感などが株価算定に影響することを示す図">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1">
+                    <stop offset="0" stop-color="#2A2954" stop-opacity=".18"/>
+                    <stop offset="1" stop-color="#2A2954" stop-opacity=".05"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="900" height="240" rx="18" fill="url(#g1)"/>
+                <g font-family="Noto Sans JP, sans-serif" fill="#111827">
+                  <text x="40" y="56" font-size="16" font-weight="700">株価算定（企業価値評価）</text>
+                  <text x="40" y="82" font-size="13" fill="#4b5563">＝複数の要素を整理して“説明できる形”にする</text>
+
+                  <g>
+                    <rect x="40" y="110" width="180" height="72" rx="14" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="58" y="142" font-size="14" font-weight="700">将来の収益力</text>
+                    <text x="58" y="164" font-size="12" fill="#6b7280">売上・利益・CF</text>
+                  </g>
+
+                  <g>
+                    <rect x="240" y="110" width="180" height="72" rx="14" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="258" y="142" font-size="14" font-weight="700">資産・負債</text>
+                    <text x="258" y="164" font-size="12" fill="#6b7280">簿価/時価の差</text>
+                  </g>
+
+                  <g>
+                    <rect x="440" y="110" width="180" height="72" rx="14" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="458" y="142" font-size="14" font-weight="700">借入・純負債</text>
+                    <text x="458" y="164" font-size="12" fill="#6b7280">ネットデット等</text>
+                  </g>
+
+                  <g>
+                    <rect x="640" y="110" width="220" height="72" rx="14" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="658" y="142" font-size="14" font-weight="700">相場感・交渉要素</text>
+                    <text x="658" y="164" font-size="12" fill="#6b7280">類似取引・シナジー</text>
+                  </g>
+                </g>
+
+                <g stroke="#2A2954" stroke-opacity=".35" stroke-width="2" fill="none">
+                  <path d="M220 146 C 235 146, 236 146, 240 146"/>
+                  <path d="M420 146 C 435 146, 436 146, 440 146"/>
+                  <path d="M620 146 C 635 146, 636 146, 640 146"/>
+                </g>
+              </svg>
+              <div class="foot">※概念図：実務では会社の状況・目的に応じて論点の深さや優先度が変わります。</div>
+            </div>
+
+            <h2 id="no-single">株価算定に「唯一の正解」はない</h2>
+            <p>
+              株価算定というと、「結局いくらが正解なのか」を知りたいと思われることが多いですが、
+              実務では必ずしも一つの正解があるわけではありません。
+            </p>
+
+            <div class="cols2" aria-label="買い手・売り手・金融機関の見方（比較）">
+              <div class="pane">
+                <h4><span class="badge">買い手</span>この価格で買って問題ないか</h4>
+                <ul>
+                  <li>リスクが織り込まれているか</li>
+                  <li>将来の稼ぐ力に無理がないか</li>
+                  <li>DD後に条件変更が必要か</li>
+                </ul>
+              </div>
+              <div class="pane">
+                <h4><span class="badge">売り手</span>価値が適切に評価されているか</h4>
+                <ul>
+                  <li>強み（競争力）が反映されているか</li>
+                  <li>一時的要因が過大に影響していないか</li>
+                  <li>価格の説明・交渉材料になるか</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="pane" style="margin-top:12px;">
+              <h4><span class="badge">金融機関</span>無理のない取引か（説明可能性）</h4>
+              <ul>
+                <li>返済計画と整合しているか</li>
+                <li>前提・算定方法が合理的か</li>
+                <li>想定が外れた場合の耐性があるか</li>
+              </ul>
+            </div>
+
+            <p>
+              このように立場によって重視する点が異なるため、株価算定は価格を考えるための出発点として使われます。
+            </p>
+
+            <h2 id="approaches">株価算定でよく使われる考え方（3つ）</h2>
+            <p>株価算定では、一般的にいくつかの考え方を用います。代表例は次の3つです。</p>
+
+            <ul class="chips" aria-label="3つの代表アプローチ">
+              <li class="chip"><b>1</b><a href="#dcf">DCF法</a><span class="muted">（将来の収益力）</span></li>
+              <li class="chip"><b>2</b><a href="#comps">類似会社比較法</a><span class="muted">（市場の相場感）</span></li>
+              <li class="chip"><b>3</b><a href="#nav">純資産法</a><span class="muted">（保有資産の価値）</span></li>
+            </ul>
+
+            <div class="tableWrap" role="region" aria-label="表：評価アプローチの比較（横スクロール可）" tabindex="0">
+              <table>
+                <thead>
+                  <tr>
+                    <th>アプローチ</th>
+                    <th>何を見る？</th>
+                    <th>強み</th>
+                    <th>注意点（実務でつまずきやすい所）</th>
+                    <th>向いている場面</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="dcf">
+                    <td><strong>DCF法</strong></td>
+                    <td>将来どれだけ利益・キャッシュを生み出せるか（収益力）</td>
+                    <td>事業計画を反映しやすく、成長・改善の説明と相性が良い</td>
+                    <td>前提（計画、WACC、永久成長率など）の置き方で結果が変わるため、「根拠の言語化」が必須</td>
+                    <td>成長投資中／収益構造が変化中／計画の説明が必要</td>
+                  </tr>
+                  <tr id="comps">
+                    <td><strong>類似会社比較法</strong></td>
+                    <td>同業種の上場会社等を参考に「市場ではどう評価されているか」</td>
+                    <td>相場感（マルチプル）で説明しやすい</td>
+                    <td>中小企業は規模・収益の安定性が異なるため、機械的な適用は危険（調整が必要）</td>
+                    <td>相場を押さえて交渉の“土台”を作りたい</td>
+                  </tr>
+                  <tr id="nav">
+                    <td><strong>純資産法</strong></td>
+                    <td>資産・負債をベースに現在の財産的価値を見る</td>
+                    <td>貸借対照表の整理（簿価/時価差、不要資産）と相性が良い</td>
+                    <td>収益力（のれん）を十分に反映しにくい。資産の時価評価・負債の認識が論点になる</td>
+                    <td>資産型企業／不動産保有／財務体質の説明が必要</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="foot">※実務では、1つの方法だけで決めず、目的に応じて複数の視点から整理するのが一般的です。</div>
+
+            <div class="note">
+              <strong>実務メモ：</strong>「どの方法が正しいか」よりも、<strong>“なぜその方法・前提を採ったのか”を説明できるか</strong>が、交渉・金融機関説明で効いてきます。
+            </div>
+
+            <h2 id="gap">評価額と実際の譲渡価格は同じとは限らない</h2>
+            <p>
+              株価算定で一定の金額が出ても、その金額がそのまま最終的な譲渡価格になるとは限りません。
+            </p>
+            <p>
+              実際のM&amp;Aでは、買い手が見込む相乗効果、売り手の希望条件、交渉の進み方、
+              デューデリジェンスの結果などによって、最終的な価格や条件は変わります。
+            </p>
+
+            <div class="tableWrap" role="region" aria-label="表：最終価格が動く主な要因（横スクロール可）" tabindex="0">
+              <table>
+                <thead>
+                  <tr>
+                    <th>要因</th>
+                    <th>価格・条件への影響例</th>
+                    <th>事前にできる準備</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>シナジー</strong></td>
+                    <td>買い手の販路・調達で利益改善が見込める場合、提示が上振れすることがある</td>
+                    <td>“単独でも成立する収益力”と“上振れ余地”を分けて説明</td>
+                  </tr>
+                  <tr>
+                    <td><strong>DD結果</strong></td>
+                    <td>簿外債務・収益認識・在庫等の論点で調整（減額やアーンアウト）</td>
+                    <td>論点の棚卸し／資料整備／早期の論点開示</td>
+                  </tr>
+                  <tr>
+                    <td><strong>交渉条件</strong></td>
+                    <td>表明保証、補償上限、支払方法（分割等）で実質価値が変わる</td>
+                    <td>条件の優先順位を決め、代替案も準備</td>
+                  </tr>
+                  <tr>
+                    <td><strong>資金調達</strong></td>
+                    <td>金融機関の理解が得られるかで、成立可能なレンジが変わる</td>
+                    <td>前提・算定ロジックの説明資料を作る</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              そのため、株価算定は「この金額で確定する」というものではなく、
+              価格交渉を進めるための客観的な材料と考えるのが実務的です。
+            </p>
+
+            <h2 id="beyond">株価算定で大切なのは「金額」だけではない</h2>
+            <p>
+              株価算定では、最終的な金額だけに目が行きがちですが、本当に大切なのはその背景です。
+            </p>
+            <ul>
+              <li>なぜその方法を使っているのか</li>
+              <li>どのような前提で評価しているのか</li>
+              <li>どこに強みやリスクが織り込まれているのか</li>
+            </ul>
+            <p>
+              こうした点を整理することで、価格の説明がしやすくなり、交渉や意思決定も進めやすくなります。
+            </p>
+
+            <div class="figure" role="group" aria-label="図：説明に必要な3点セット">
+              <p class="figureTitle">図｜説明に必要な「3点セット」</p>
+              <svg viewBox="0 0 900 220" width="100%" height="auto" role="img" aria-label="方法、前提、強みとリスクの3点を整理する図">
+                <defs>
+                  <linearGradient id="g2" x1="0" x2="1">
+                    <stop offset="0" stop-color="#2A2954" stop-opacity=".14"/>
+                    <stop offset="1" stop-color="#2A2954" stop-opacity=".04"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="900" height="220" rx="18" fill="url(#g2)"/>
+                <g font-family="Noto Sans JP, sans-serif">
+                  <g>
+                    <circle cx="210" cy="110" r="68" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="210" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">方法</text>
+                    <text x="210" y="130" text-anchor="middle" font-size="12" fill="#6b7280">DCF/比較/純資産</text>
+                  </g>
+                  <g>
+                    <circle cx="450" cy="110" r="68" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="450" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">前提</text>
+                    <text x="450" y="130" text-anchor="middle" font-size="12" fill="#6b7280">計画・調整・仮定</text>
+                  </g>
+                  <g>
+                    <circle cx="690" cy="110" r="68" fill="#fff" stroke="#e6e8ef"/>
+                    <text x="690" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">強み/リスク</text>
+                    <text x="690" y="130" text-anchor="middle" font-size="12" fill="#6b7280">反映状況を明確化</text>
+                  </g>
+
+                  <g stroke="#2A2954" stroke-opacity=".35" stroke-width="2" fill="none">
+                    <path d="M278 110 C 320 110, 340 110, 382 110"/>
+                    <path d="M518 110 C 560 110, 580 110, 622 110"/>
+                  </g>
+                </g>
+              </svg>
+              <div class="foot">※「金額」だけでなく、“説明可能性”を高めると、金融機関対応や交渉が進めやすくなります。</div>
+            </div>
+
+            <h2 id="summary">まとめ</h2>
+            <p>
+              株価算定（企業価値評価）は、M&amp;Aや事業承継において、会社や株式の価値を考えるための重要な手続きです。
+              特に中堅・中小企業では市場価格がないため、価格の妥当性を整理するうえで大きな意味があります。
+            </p>
+            <p>
+              大切なのは、単に金額を見ることではなく、なぜその金額になるのかを理解することです。
+            </p>
+
+            <div class="cta" id="cta" aria-label="記事末尾のCTA">
+              <h3>株価算定・企業価値評価のご相談</h3>
+              <p class="muted" style="margin-top:6px;">
+                当社では、中堅・中小企業のM&amp;A・事業承継における株価算定、企業価値評価、財務DDに対応しています。
+                買い手として提示価格の妥当性を確認したい場合も、売り手として自社の価値を整理したい場合も、
+                案件の目的や状況に応じて実務的にサポートしています。
+              </p>
+              <p style="margin:10px 0 0;">
+                株価算定は、価格を決めるためだけではなく、納得感のある交渉と意思決定を進めるための土台です。<br/>
+                株式譲渡や事業承継をご検討の際は、お気軽にご相談ください。
+              </p>
+              <div class="btns">
+                <a class="btn btnPrimary" href="__CONTACT_URL__">お問い合わせ（ご相談）</a>
+                <a class="btn" href="#approaches">評価アプローチを確認する <small>（表へ）</small></a>
+              </div>
+              <div class="foot">※公開時に <code>__CONTACT_URL__</code> を実URLへ置換してください。</div>
+            </div>
+
+            <div class="hr"></div>
+            <p class="muted" style="font-size:13.5px;">
+              免責：本ページは一般的な情報提供を目的としたもので、個別案件への助言を構成するものではありません。
+              実際の取引判断は、案件の状況に応じて専門家へご相談ください。
+            </p>
+
+            <p style="margin-top: 12px;">
+              <a href="#top">ページ上部へ戻る</a>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="card side" aria-label="サイドバー">
+        <div class="inner">
+          <h3 id="author"><a href="#author">監修・対応領域</a></h3>
+          <p class="muted" style="margin-top:6px;">
+            M&amp;A・事業承継における「価格の説明」と「意思決定の前進」を重視し、株価算定（企業価値評価）・財務DD・金融機関説明まで一気通貫で整理します。
+          </p>
+
+          <div class="btns" style="margin-top:12px;">
+            <a class="btn btnPrimary" href="__CONTACT_URL__">相談する</a>
+            <a class="btn" href="#when">必要になる場面を見る</a>
+          </div>
+          <div class="foot">※ここも <code>__CONTACT_URL__</code> を置換</div>
+
+          <div class="hr"></div>
+
+          <nav class="toc tocDesktop" aria-label="目次（デスクトップ）">
+            <h2 style="display:block; margin:0 0 10px; padding:0; border:0;">
+              目次
+            </h2>
+            <ol>
+              <li><a href="#intro">はじめに</a></li>
+              <li><a href="#when">株価算定が必要になる場面</a></li>
+              <li><a href="#no-single">「唯一の正解」はない</a></li>
+              <li><a href="#approaches">よく使われる考え方（3つ）</a></li>
+              <li><a href="#gap">評価額と譲渡価格は一致しない</a></li>
+              <li><a href="#beyond">大切なのは「金額」だけではない</a></li>
+              <li><a href="#summary">まとめ</a></li>
+              <li><a href="#cta">ご相談（CTA）</a></li>
+            </ol>
+          </nav>
+
+          <div class="hr"></div>
+
+          <h3 id="quick"><a href="#quick">読みどころ（要点）</a></h3>
+          <ul>
+            <li>立場（買い手／売り手／金融機関）で“見たいもの”が変わる</li>
+            <li>3つの代表アプローチを比較して、説明の土台を作る</li>
+            <li>評価額＝譲渡価格ではない（条件・DDで動く）</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="wrap" aria-label="フッター">
+      <div class="hr"></div>
+      <div>
+        参照デザイン（雰囲気）：<a href="https://duqddu-my-site-y7spf6js-naritainside.wix-vibe-site.com/" target="_blank" rel="noreferrer">Wixサイト</a><br/>
+        ヒーロー背景画像：<a href="https://static.wixstatic.com/media/ef45fa_85d537fb06cf432284f104a9cae89da8~mv2.png" target="_blank" rel="noreferrer">wixstatic</a><br/>
+        ロゴ画像：<a href="https://static.wixstatic.com/media/ef45fa_ee036c6be23b48ed9bc7dc22a2f90da9~mv2.png" target="_blank" rel="noreferrer">wixstatic</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth-scroll offset helper (keeps behavior consistent across Wix embed cases)
+    (function(){
+      const links = document.querySelectorAll('a[href^="#"]');
+      links.forEach(a => {
+        a.addEventListener('click', (e) => {
+          const id = a.getAttribute('href');
+          if(!id || id === '#') return;
+          const el = document.querySelector(id);
+          if(!el) return;
+          e.preventDefault();
+          const y = el.getBoundingClientRect().top + window.scrollY - 10;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          history.pushState(null, '', id);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
